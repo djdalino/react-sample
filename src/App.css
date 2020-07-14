@@ -1,0 +1,19 @@
+.data-container {
+  height: 100px;
+  display: flex;
+  overflow: hidden;
+  border: 1px solid black;
+  position: relative;
+}
+.box-container {
+  display: flex;
+  width: 100px;
+  border: 1px solid black;
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+}
+.inside-box {
+  overflow: hidden;
+  border: 1px solid black;
+}
