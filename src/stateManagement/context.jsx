@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
-import "./App.css";
 
-//class base component
-class App extends Component {
-  //state objects
+const Context = React.createContext();
+
+class ContextProvider extends Component {
   state = {
     color: "",
     isNavbar: false,
@@ -15,7 +14,6 @@ class App extends Component {
     items: [],
     result: 0,
   };
-
   //Life Cycle Hook triggers function after loading the page
   componentDidMount() {
     //this.handleGetData();
@@ -24,19 +22,6 @@ class App extends Component {
   handleGetData = async () => {
     const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
     this.setState({ items: res.data }); //default property of axios getting the datas(ex: any.data)
-  };
-
-  getValue = (value) => {
-    console.log(value);
-  };
-  handleChangeColor = (value) => {
-    if (value === "red") {
-      this.setState({ color: "red" });
-    } else if (value === "blue") {
-      this.setState({ color: "blue" });
-    } else if (value === "green") {
-      this.setState({ color: "green" });
-    }
   };
   //adding data using axios.post
   handlePostData = async () => {
@@ -54,6 +39,19 @@ class App extends Component {
       console.log("okay");
     }
   };
+  getValue = (value) => {
+    console.log(value);
+  };
+  handleChangeColor = (value) => {
+    if (value === "red") {
+      this.setState({ color: "red" });
+    } else if (value === "blue") {
+      this.setState({ color: "blue" });
+    } else if (value === "green") {
+      this.setState({ color: "green" });
+    }
+  };
+
   // function that decreases the object state count
   handleDecrement = () => {
     this.setState({ count: this.state.count - 1 });
@@ -102,60 +100,19 @@ class App extends Component {
     this.setState({ result: num1 + num2 });
   };
   render() {
-    //tinetesting kung may laman na ang state na items:[]
-    console.log(this.state.items);
     return (
-      <div className={`container ${this.state.isNavbar ? "" : "add"}`}>
-        <p>{this.state.count}</p>
-        <button
-          onClick={() => this.handleDecrement()}
-          disabled={this.state.count === 0 ? true : false}
-        >
-          Decrement
-        </button>
-        <button
-          onClick={() => this.handleIncrement()}
-          disabled={this.state.count === 10 ? true : false}
-        >
-          Increment
-        </button>
-        <button onClick={() => this.handleReset()}>Reset</button>
-
-        <form onSubmit={this.handleSubmit}>
-          <p>name: {this.state.name}</p>
-          <input
-            type="text"
-            name="title"
-            onChange={this.handleOnChange}
-            value={this.state.title}
-          />
-          <input
-            type="text"
-            name="body"
-            onChange={this.handleOnChange}
-            value={this.state.body}
-          />
-          <input type="submit" value="submit" />
-        </form>
-        <div className={`box ${this.state.color}`}></div>
-        <button onClick={() => this.handleChangeColor("red")}>red</button>
-        <button onClick={() => this.handleChangeColor("blue")}>blue</button>
-        <button onClick={() => this.handleChangeColor("green")}>green</button>
-
-        <div>{this.state.result}</div>
-        <button onClick={() => this.handleAddButton(5, 9)}>Add</button>
-        {/*Dito kinukuha natin lahat ng data na nakastore sa state natin na items:[] */}
-        {this.state.items.map((item) => {
-          return (
-            <div key={item.id}>
-              {item.title}
-              <button onClick={() => this.getValue(item.id)}>click</button>
-            </div>
-          );
-        })}
-      </div>
+      <Context.Provider
+        value={{
+          ...this.state,
+          handleChangeColor: this.handleChangeColor,
+          handleDecrement: this.handleDecrement,
+          handleIncrement: this.handleIncrement,
+        }}
+      >
+        {this.props.children}
+      </Context.Provider>
     );
   }
 }
-
-export default App;
+const ContextConsumer = Context.Consumer;
+export { ContextProvider, ContextConsumer };
