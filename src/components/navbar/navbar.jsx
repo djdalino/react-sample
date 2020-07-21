@@ -1,7 +1,21 @@
 import React from "react";
-
-const navbar = () => {
-  return <div></div>;
+import { ContextConsumer } from "../../stateManagement/context";
+const Navbar = () => {
+  return (
+    <div>
+      <ContextConsumer>
+        {(value) => {
+          const { handleClickNavbar } = value;
+          return (
+            <div>
+              <p>Navbar</p>
+              <button onClick={handleClickNavbar}>Click</button>
+            </div>
+          );
+        }}
+      </ContextConsumer>
+    </div>
+  );
 };
 
-export default navbar;
+export default Navbar;

@@ -13,11 +13,16 @@ class ContextProvider extends Component {
     body: "",
     items: [],
     result: 0,
+
+    isModal: true,
   };
   //Life Cycle Hook triggers function after loading the page
   componentDidMount() {
     //this.handleGetData();
   }
+  handleClickNavbar = () => {
+    console.log("handle navbar is working");
+  };
   //to fetch data you must install the package axios using npm install axios
   handleGetData = async () => {
     const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
@@ -88,17 +93,6 @@ class ContextProvider extends Component {
     }
   };
 
-  handleNavbarScroll = () => {
-    window.addEventListener("scroll", () => {
-      let windowHeight = window.scrollY;
-      if (windowHeight > 200) {
-        this.setState({ isNavbar: true });
-      }
-    });
-  };
-  handleAddButton = (num1, num2) => {
-    this.setState({ result: num1 + num2 });
-  };
   render() {
     return (
       <Context.Provider
@@ -107,6 +101,8 @@ class ContextProvider extends Component {
           handleChangeColor: this.handleChangeColor,
           handleDecrement: this.handleDecrement,
           handleIncrement: this.handleIncrement,
+          handleReset: this.handleReset,
+          handleClickNavbar: this.handleClickNavbar,
         }}
       >
         {this.props.children}
